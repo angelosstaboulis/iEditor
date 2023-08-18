@@ -16,6 +16,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var searchText:SearchText!
     var newFileName:String!
     var newRange:NSRange!
+    func setupEditor(){
+        viewController =  (NSApplication.shared.orderedWindows.first?.contentViewController as? ViewController)!
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        searchText =  storyboard.instantiateController(withIdentifier: "SearchText") as? SearchText
+        searchText.title = "Search Text"
+        mnuEdit.items[8].isHidden = true
+        mnuEdit.items[9].isHidden = true
+    }
     @IBAction func mnuCut(_ sender: Any) {
         Helper.shared.mnuCut(viewController: viewController)
     }
@@ -54,12 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        viewController =  (NSApplication.shared.orderedWindows.first?.contentViewController as? ViewController)!
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        searchText =  storyboard.instantiateController(withIdentifier: "SearchText") as? SearchText
-        searchText.title = "Search Text"
-        mnuEdit.items[8].isHidden = true
-        mnuEdit.items[9].isHidden = true
+        setupEditor()
        
     }
     @objc func getValue(notification:NSNotification){
