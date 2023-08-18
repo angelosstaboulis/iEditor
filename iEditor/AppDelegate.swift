@@ -10,7 +10,8 @@ import SwiftUI
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var saveFileAs = NSSavePanel()
+    @IBOutlet weak var mnuEdit: NSMenu!
+    
     var viewController:ViewController!
     var searchText:SearchText!
     var newFileName:String!
@@ -38,46 +39,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Helper.shared.mnuSelectAll(viewController: viewController)
     }
     @IBAction func mnuFileNew(_ sender: Any) {
-        let newFile = NSSavePanel()
-        viewController.textView.string = ""
-        newFile.title = "Create New File"
-        if newFile.runModal() == .OK {
-            newFileName = newFile.directoryURL!.path + "/" + newFile.nameFieldStringValue
-        }
-        
+        newFileName = Helper.shared.mnuNewFile()
         
     }
     @IBAction func mnuSaveAs(_ sender: Any) {
-        let getText = viewController.textView.string
-        saveFileAs.title = "Save File As"
-        saveFileAs.nameFieldStringValue = self.newFileName
-        saveFileAs.begin { [self] response in
-            if response == .OK {
-                FileManager.default.createFile(atPath: self.newFileName, contents:getText.data(using: .utf8), attributes: [:])
-            }
-        }
-        saveFileAs.runModal()
+        Helper.shared.mnuSaveFileAs(mnuViewController: viewController, newFileName: newFileName)
     }
     @IBAction func mnuPrint(_ sender: Any) {
-        let printPanel = NSPrintOperation(view: viewController.view)
-        printPanel.run()
+        Helper.shared.mnuPrintFile(mnuViewController: viewController)
     }
     
     @IBAction func mnuOpen(_ sender: Any) {
-        do{
-            let openFile = NSOpenPanel()
-            openFile.title = "Open File"
-            openFile.canChooseFiles = true
-            openFile.canChooseDirectories = true
-           
-            if openFile.runModal() == .OK {
-                let contents = try String(contentsOf: URL(fileURLWithPath: openFile.url!.path))
-                viewController.textView.string = contents
-            }
-           
-        }catch{
-            debugPrint("something went wrong!!!")
-        }
+        Helper.shared.mnuOpenFile(mnuViewController:viewController)
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -85,6 +58,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         searchText =  storyboard.instantiateController(withIdentifier: "SearchText") as? SearchText
         searchText.title = "Search Text"
+        mnuEdit.items[8].isHidden = true
+        mnuEdit.items[9].isHidden = true
        
     }
     @objc func getValue(notification:NSNotification){
