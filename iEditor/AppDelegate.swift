@@ -11,7 +11,6 @@ import SwiftUI
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var mnuEdit: NSMenu!
-    
     var viewController:ViewController!
     var searchText:SearchText!
     var newFileName:String!

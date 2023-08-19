@@ -60,10 +60,8 @@ class Helper{
         let getText = mnuViewController.textView.string
         saveFileAs.title = "Save File As"
         saveFileAs.nameFieldStringValue = newFileName
-        saveFileAs.begin { response in
-            if response == .OK {
-                FileManager.default.createFile(atPath: newFileName, contents:getText.data(using: .utf8), attributes: [:])
-            }
+        if saveFileAs.runModal() == .OK{
+            FileManager.default.createFile(atPath: newFileName, contents:getText.data(using: .utf8), attributes: [:])
         }
         saveFileAs.runModal()
     }
