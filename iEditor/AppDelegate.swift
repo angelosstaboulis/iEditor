@@ -17,12 +17,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var newFileName:String!
     var newRange:NSRange!
     func setupEditor(){
-        viewController =  (NSApplication.shared.orderedWindows.first?.contentViewController as? ViewController)!
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        searchText =  storyboard.instantiateController(withIdentifier: "SearchText") as? SearchText
-        searchText.title = "Search Text"
-        mnuEdit.items[8].isHidden = true
-        mnuEdit.items[9].isHidden = true
+        viewController = Helper.shared.initialViewController()
+        searchText = Helper.shared.initialSearchController()
+        Helper.shared.initialEditor(mnuEdit: mnuEdit)
     }
     @IBAction func mnuCut(_ sender: Any) {
         Helper.shared.mnuCut(viewController: viewController)

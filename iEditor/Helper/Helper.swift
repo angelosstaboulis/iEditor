@@ -7,9 +7,25 @@
 
 import Foundation
 import AppKit
+import SwiftUI
 class Helper{
     static let shared = Helper()
     private init(){}
+    func initialViewController()->ViewController{
+        let viewController =  (NSApplication.shared.orderedWindows.first?.contentViewController as? ViewController)!
+        return viewController
+    }
+    func initialSearchController()->SearchText{
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let searchText =  storyboard.instantiateController(withIdentifier: "SearchText") as? SearchText
+        searchText!.title = "Search Text"
+        return searchText!
+    }
+    func initialEditor(mnuEdit:NSMenu){
+        mnuEdit.items[8].isHidden = true
+        mnuEdit.items[9].isHidden = true
+  
+    }
     func searchString(viewController:ViewController,search:String)->NSRange{
         let range = viewController.textView.string.range(of: search)
         let newRange = NSRange(range!, in: viewController.textView.string)
