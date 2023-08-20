@@ -63,7 +63,6 @@ class Helper{
         if saveFileAs.runModal() == .OK{
             FileManager.default.createFile(atPath: newFileName, contents:getText.data(using: .utf8), attributes: [:])
         }
-        saveFileAs.runModal()
     }
     func mnuPrintFile(mnuViewController:ViewController){
         let printPanel = NSPrintOperation(view: mnuViewController.view)
